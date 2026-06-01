@@ -1,0 +1,13 @@
+{
+  "name": "ecommerce-backend",
+  "env": "node",
+  "buildCommand": "npm install",
+  "startCommand": "node src/app.js",
+  "envVars": [
+    { "key": "MYSQLHOST", "sync": false },
+    { "key": "MYSQLUSER", "sync": false },
+    { "key": "MYSQLPASSWORD", "sync": false },
+    { "key": "MYSQLDATABASE", "sync": false },
+    { "key": "MYSQLPORT", "sync": false }
+  ]
+}
