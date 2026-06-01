@@ -19,12 +19,15 @@ app.use(logger);
 // Servir archivos estaticos del frontend
 app.use(express.static(path.join(__dirname, "../public")));
 
-// Ruta para inicializar la base de datos (crear tabla)
+// Ruta para inicializar la base de datos (recrear tabla)
 app.get("/api/setup", async (req, res) => {
   try {
     const pool = require("./config/db");
+    // Eliminar tabla anterior si existe (tenia columnas incorrectas)
+    await pool.query(`DROP TABLE IF EXISTS products`);
+    // Crear tabla con la estructura correcta
     await pool.query(`
-      CREATE TABLE IF NOT EXISTS products (
+      CREATE TABLE products (
         id INT AUTO_INCREMENT PRIMARY KEY,
         name VARCHAR(100) NOT NULL,
         description TEXT,
@@ -34,7 +37,7 @@ app.get("/api/setup", async (req, res) => {
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `);
-    res.json({ success: true, message: "Tabla products creada/verificada correctamente" });
+    res.json({ success: true, message: "Tabla products recreada correctamente con columnas: id, name, description, price, stock, image_url, created_at" });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
